@@ -1,0 +1,1 @@
+export const BACKEND_URL = 'https://api-ecommerce-strapi-sit.herokuapp.com'

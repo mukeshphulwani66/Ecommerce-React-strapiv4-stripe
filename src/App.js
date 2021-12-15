@@ -1,24 +1,43 @@
-import logo from './logo.svg';
 import './App.css';
+import Home from './pages/Home';
+import { CartProvider} from "react-use-cart";
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider
+} from "@apollo/client";
+import NavBar from './components/NavBar';
+import { BrowserRouter, useRoutes } from 'react-router-dom';
+import routes from './routes';
+import '@brainhubeu/react-carousel/lib/style.css';
+import Category from './components/Category';
+import { BACKEND_URL } from './helpers';
+
+const client = new ApolloClient({
+  uri: `${BACKEND_URL}/graphql`,
+  cache: new InMemoryCache()
+});
+
+const Routes = ()=>{
+  const element = useRoutes(routes)
+  return(
+    <>
+      <NavBar />
+      {element}
+      <Category />
+    </>
+  )
+}
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <CartProvider>
+    <BrowserRouter>
+     <ApolloProvider client={client}>
+      <Routes />
+     </ApolloProvider>
+    </BrowserRouter>
+    </CartProvider>
   );
 }
 
